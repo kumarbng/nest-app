@@ -4,11 +4,11 @@ pipeline{
 	 stage (maven install){
 	 agent {
 	  docker {
-	  image 'maven:3.6.0'
+	  image 'maven:3.6.3'
 	  } 
 	  }
 	  steps {
-	    sh 'maven clean install'
+	    sh 'maven compiler clean install'
 	  }
 	  }
 	  stage ('Docker Build'){
@@ -17,6 +17,13 @@ pipeline{
 	   sh 'docker build -t kumarbng/firstrepo:latest .'
 	   }
 	   }
-	  }
-	  }
+	   stage ('Docker push'){
+	   agent any
+	   steps{
+	   sh 'docker login -u kumarbng -p chinnagan7799'
+	   sh 'docker push kumarbng/firstrepo:latest'
+	   }
+        }
+     }
+  }
 
